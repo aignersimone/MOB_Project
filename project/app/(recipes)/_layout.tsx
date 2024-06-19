@@ -1,6 +1,6 @@
 import { Stack } from 'expo-router';
 
-export default function ReviewLayout(){
+export default function RecipeLayout(){
     return (
         <Stack screenOptions={{
             headerStyle:{
@@ -16,12 +16,12 @@ export default function ReviewLayout(){
         }>
             <Stack.Screen name="index" options={
                 {
-                    headerTitle:"Review",
+                    headerTitle:"Recipes",
                 }
             }></Stack.Screen>
             <Stack.Screen name="[id]" options={
                 {
-                    headerTitle:"Review Detail",
+                    headerTitle:"Recipe Detail",
                 }
             }></Stack.Screen>
         </Stack>

@@ -42,17 +42,17 @@ function TabsLayout(){
             tabBarInactiveTintColor: "black"
         }
         }>
-            <Tabs.Screen name="(reviews)" options={
+            <Tabs.Screen name="(recipes)" options={
                 {
                     headerShown: false,
-                    title: "Home",
-                    tabBarIcon: ({color}) => <FontAwesome name="home" size={24} color={color}/>
+                    title: "Recipes",
+                    tabBarIcon: ({color}) => <FontAwesome name="book" size={24} color={color}/>
                 }
             }/>
             <Tabs.Screen name="about" options={
                 {
-                    title: "About",
-                    tabBarIcon: ({color}) => <FontAwesome name="info" size={24} color={color}/>
+                    title: "Home",
+                    tabBarIcon: ({color}) => <FontAwesome name="home" size={24} color={color}/>
                 }
             }/>
         </Tabs>
