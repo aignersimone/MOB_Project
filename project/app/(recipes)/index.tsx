@@ -62,6 +62,17 @@ const RecipePage: React.FC = () => {
         );
     }
 
+    async function fetchItem(label){
+        console.log(label);
+        const name = label;
+        const response = await fetch(
+            `https://api.edamam.com/search?q=${label}&app_id=7d254b68&app_key=16a2684bdfd34e95b15fa59969b25d54`
+        );
+        const data = await response.json();
+        console.log(data);
+        return data;
+    }
+
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Find the perfect Recipe</Text>
@@ -80,7 +91,7 @@ const RecipePage: React.FC = () => {
             <FlatList
                 data={recipes}
                 renderItem={({ item }) => (
-                    <TouchableOpacity onPress={() => router.push({pathname:item.recipe.label, params:item})}>
+                    <TouchableOpacity onPress={() => router.push({pathname:item.recipe.label, params: fetchItem(item.recipe.label)})}>
                         <View style={styles.recipeItem}>
                             <Image
                                 source={{ uri: item.recipe.image }}
