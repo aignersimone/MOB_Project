@@ -1,5 +1,5 @@
 import { useRoute } from '@react-navigation/native';
-import { StyleSheet, View, Text, Image, FlatList } from 'react-native';
+import { StyleSheet, View, Text, Image, FlatList, ScrollView } from 'react-native';
 import React, { useState, useEffect } from "react";
 
 async function fetchRecipe(uri) {
@@ -48,15 +48,13 @@ export default function RecipeDetail() {
     }
 
     return (
-        <View style={styles.container}>
+        <ScrollView style={styles.container}>
             <Text style={styles.label}>{recipe.label}</Text>
             <Image source={{ uri: recipe.image }} style={styles.image} />
             <Text style={styles.heading}>Ingredients:</Text>
-            <FlatList
-                data={recipe.ingredientLines}
-                keyExtractor={(item, index) => index.toString()}
-                renderItem={({ item }) => <Text style={styles.ingredient}>• {item}</Text>}
-            />
+            {recipe.ingredientLines.map((item, index) => (
+                <Text key={index} style={styles.ingredient}>• {item}</Text>
+            ))}
             <Text style={styles.heading}>Details:</Text>
             <Text style={styles.detail}>Calories: {recipe.calories.toFixed(2)}</Text>
             <Text style={styles.detail}>Cuisine Type: {recipe.cuisineType.join(', ')}</Text>
@@ -65,13 +63,14 @@ export default function RecipeDetail() {
             <Text style={styles.detail}>Health Labels: {recipe.healthLabels.join(', ')}</Text>
             <Text style={styles.detail}>Cautions: {recipe.cautions.join(', ')}</Text>
             <Text style={styles.detail}>Source: {recipe.source}</Text>
-        </View>
+        </ScrollView>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
         padding: 24,
+        flex: 1,
     },
     label: {
         fontSize: 24,
