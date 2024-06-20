@@ -88,7 +88,7 @@ const RecipePage: React.FC = () => {
                                 source={{ uri: item.recipe.image }}
                                 style={styles.recipeImage}
                             />
-                            <Text>{item.recipe.label}</Text>
+                            <Text style={styles.label}>{item.recipe.label}</Text>
 
                         </View>
                     </TouchableOpacity>
@@ -139,9 +139,9 @@ const styles = StyleSheet.create({
     recipeItem: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginBottom: 8,
+        marginBottom: 10,
         padding: 8,
-        backgroundColor: '#F89678',
+        backgroundColor: '#DBD9DD',
         borderRadius: 4,
     },
     recipeImage: {
@@ -154,6 +154,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
+    label:{
+        fontSize: 16,
+    }
 });
 
 export default RecipePage;

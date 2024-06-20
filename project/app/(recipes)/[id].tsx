@@ -1,5 +1,5 @@
 import { useRoute } from '@react-navigation/native';
-import { StyleSheet, View, Text, Image, FlatList, ScrollView } from 'react-native';
+import { StyleSheet, View, Text, Image, ScrollView } from 'react-native';
 import React, { useState, useEffect } from "react";
 
 async function fetchRecipe(uri) {
@@ -46,6 +46,7 @@ export default function RecipeDetail() {
             </View>
         );
     }
+    console.log(recipe);
 
     return (
         <ScrollView style={styles.container}>
@@ -56,13 +57,19 @@ export default function RecipeDetail() {
                 <Text key={index} style={styles.ingredient}>• {item}</Text>
             ))}
             <Text style={styles.heading}>Details:</Text>
-            <Text style={styles.detail}>Calories: {recipe.calories.toFixed(2)}</Text>
-            <Text style={styles.detail}>Cuisine Type: {recipe.cuisineType.join(', ')}</Text>
-            <Text style={styles.detail}>Diet Labels: {recipe.dietLabels.join(', ')}</Text>
-            <Text style={styles.detail}>Dish Type: {recipe.dishType.join(', ')}</Text>
-            <Text style={styles.detail}>Health Labels: {recipe.healthLabels.join(', ')}</Text>
-            <Text style={styles.detail}>Cautions: {recipe.cautions.join(', ')}</Text>
-            <Text style={styles.detail}>Source: {recipe.source}</Text>
+            <Text style={styles.detail}><Text style={styles.boldText}>Cuisine Type:</Text> {recipe.cuisineType.join(', ')}</Text>
+            <Text style={styles.detail}><Text style={styles.boldText}>Dish Type:</Text> {recipe.dishType.join(', ')}</Text>
+            <Text style={styles.detail}><Text style={styles.boldText}>Cautions:</Text> {recipe.cautions.join(', ')}</Text>
+            <Text style={styles.detail}><Text style={styles.boldText}>Calories: </Text>{recipe.calories.toFixed(2)}</Text>
+            {/*<Text style={styles.detail}><Text style={styles.boldText}>Diet Labels:</Text> {recipe.dietLabels.join(', ')}</Text>*/}
+            <Text style={styles.detail}><Text style={styles.boldText}>Health Labels:</Text></Text>
+            <View style={styles.tagsContainer}>
+                {recipe.healthLabels.map((label, index) => (
+                    <View key={index} style={styles.tag}>
+                        <Text style={styles.tagText}>{label}</Text>
+                    </View>
+                ))}
+            </View>
         </ScrollView>
     );
 }
@@ -82,9 +89,10 @@ const styles = StyleSheet.create({
         marginVertical: 16,
     },
     heading: {
-        fontSize: 18,
+        fontSize: 20,
         fontWeight: 'bold',
-        marginTop: 16,
+        marginTop: 25,
+        color: "#f4511e",
     },
     ingredient: {
         fontSize: 16,
@@ -93,5 +101,26 @@ const styles = StyleSheet.create({
     detail: {
         fontSize: 16,
         marginVertical: 2,
+        marginTop: 14,
     },
+    tagsContainer: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        marginVertical: 8,
+        marginBottom: 35,
+    },
+    tag: {
+        backgroundColor: '#e0e0e0',
+        borderRadius: 20,
+        paddingVertical: 4,
+        paddingHorizontal: 12,
+        margin: 4,
+    },
+    tagText: {
+        fontSize: 14,
+        color: '#333',
+    },
+    boldText:{
+        fontWeight: 'bold',
+    }
 });
