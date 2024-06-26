@@ -3,8 +3,8 @@ import ClarifaiModel from "../components/ClarifaiModel";
 
 export default function IngredientsPage(){
     return (
-        <ScrollView>
-            <Text style={styles.header}>Our smart recipe finder</Text>
+        <ScrollView style={styles.container}>
+            <Text style={styles.title}>Our smart recipe finder</Text>
             <Text style={styles.info}>Photograph your food individually and you will be shown a recipe of what you can make from the food</Text>
             <ClarifaiModel />
         </ScrollView>
@@ -13,15 +13,19 @@ export default function IngredientsPage(){
 
 const styles = StyleSheet.create({
     info:{
-        fontSize: 14,
+        fontSize: 16,
         textAlign: 'center',
-        marginTop: 20,
         marginBottom: 20,
     },
-    header:{
+    title: {
         fontSize: 24,
-        fontWeight: 'bold',
-        textAlign: 'center',
-    }
+        fontFamily: "KalamBold",
+        marginBottom: 16,
+        alignSelf: "center"
+    },
+    container: {
+        flex: 1,
+        padding: 24,
+    },
 
 });

@@ -99,7 +99,9 @@ const ClarifaiModel = () => {
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView contentContainerStyle={styles.scrollViewContainer}>
-                <Button title="Take Photo" style={styles.takefoto} onPress={pickImage} />
+                <TouchableOpacity style={styles.button} onPress={pickImage}>
+                    <Text style={styles.buttonText}>Take Photo</Text>
+                </TouchableOpacity>
                 <View style={styles.imageRow}>
                     {images.map((uri, index) => (
                         <View key={index} style={styles.imageContainer}>
@@ -112,11 +114,13 @@ const ClarifaiModel = () => {
                     ))}
                 </View>
                 <View>
-                    <Text>Scanned Ingredients:</Text>
+                    <Text style={styles.text}>Scanned Ingredients:</Text>
                     {ingredients.map((ingredient, index) => (
                         <Text key={index}>{ingredient}</Text>
                     ))}
-                    <Button title="Show Recipe" onPress={() => {}} />
+                    <TouchableOpacity style={styles.button}>
+                        <Text style={styles.buttonText}>Show Recipe</Text>
+                    </TouchableOpacity>
                 </View>
             </ScrollView>
         </SafeAreaView>
@@ -157,11 +161,23 @@ const styles = StyleSheet.create({
         top: 5,
         right: 5,
     },
-    takefoto: {
-        backgroundColor: '#f4511e',
+    buttonText: {
         color: 'white',
-        marginBottom: 20,
-    }
+    },
+    button: {
+        borderColor: '#f4511e',
+        borderWidth: 1,
+        borderRadius: 8,
+        backgroundColor: '#f4511e',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 8,
+        marginBottom: 16,
+        marginTop: -8,
+        width: 130,
+    },
+
+
 });
 
 export default ClarifaiModel;
