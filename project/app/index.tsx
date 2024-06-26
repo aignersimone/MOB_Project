@@ -4,7 +4,7 @@ import React from "react";
 import {useNavigation} from "@react-navigation/native";
 
 
-export default function HomePage() {
+export default function App() {
     const [loaded, error] = useFonts({
         'KalamBold':require('../assets/fonts/Kalam-Bold.ttf'),
         'KalamRegular':require('../assets/fonts/Kalam-Regular.ttf'),
@@ -14,7 +14,7 @@ export default function HomePage() {
     const navigation = useNavigation();
 
     const handlePressRecipe = ()=> {
-        navigation.navigate('index');
+        navigation.navigate('recipes');
     };
 
 
@@ -38,9 +38,6 @@ export default function HomePage() {
                 <TouchableOpacity style={styles.button}  onPress={handlePressRecipe}>
                     <Text style={styles.buttonText}>Find Recipes</Text>
                 </TouchableOpacity>
-
-
-                <Text style={styles.text}><Text style={styles.boldText}>Stay Organized:</Text> With ReceptReveal, meal planning and grocery shopping have never been easier. Keep track of ingredients, create shopping lists, and ensure you always have what you need to create delicious meals.</Text>
 
                 <Text style={styles.text}>Join the ReceptReveal community today and transform your cooking experience. Let’s get started on your culinary journey!</Text>
 
@@ -74,7 +71,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
     },
     button:{
-        borderColor: '#ccc',
+        borderColor: '#f4511e',
         borderWidth: 1,
         borderRadius: 8,
         backgroundColor: '#f4511e',

@@ -23,7 +23,7 @@ export default function RecipeLayout(){
             tabBarInactiveTintColor: "black"
         }
         }>
-            <Stack.Screen name="index" options={
+            <Stack.Screen name="recipes" options={
                 {
                     headerTitle:"Recipes",
                 }
