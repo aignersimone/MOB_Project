@@ -6,8 +6,9 @@ import {useEffect} from "react";
 SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
     const [loaded, error] = useFonts({
-        'spacemono-regular':require('../assets/fonts/SpaceMono-Regular.ttf'),
-        'spacemono-bold':require('../assets/fonts/SpaceMono-Bold.ttf'),
+        'KalamBold':require('../assets/fonts/Kalam-Bold.ttf'),
+        'KalamRegular':require('../assets/fonts/Kalam-Regular.ttf'),
+        'KalamLight':require('../assets/fonts/Kalam-Light.ttf'),
     });
 
     // Expo Router uses Error Boundaries to catch errors in the navigation tree.
@@ -36,7 +37,9 @@ function TabsLayout(){
 
             },headerTintColor: "white",
             headerTitleStyle:{
-                fontWeight: "bold"
+                fontWeight: "bold",
+                fontFamily: "KalamBold",
+                fontSize: 20
             },
             tabBarActiveTintColor: "#f4511e",
             tabBarInactiveTintColor: "black"
@@ -57,8 +60,8 @@ function TabsLayout(){
             }/>
             <Tabs.Screen name="ingredients" options={
                 {
-                    title: "Ingredients",
-                    tabBarIcon: ({color}) => <FontAwesome name="info" size={24} color={color}/>
+                    title: "IngredientScan",
+                    tabBarIcon: ({color}) => <FontAwesome name="camera" size={24} color={color}/>
                 }
             }/>
         </Tabs>

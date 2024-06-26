@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native';
 import RecipeItem from "../../components/RecipeItem";
+import {useFonts} from "expo-font";
 
 const RecipePage: React.FC = () => {
+    const [loaded, errors] = useFonts({
+        'KalamBold':require('../../assets/fonts/Kalam-Bold.ttf'),
+        'KalamRegular':require('../../assets/fonts/Kalam-Regular.ttf'),
+        'KalamLight':require('../../assets/fonts/Kalam-Light.ttf'),
+    });
+
     const [recipes, setRecipes] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
-    const [query, setQuery] = useState<string>(''); // Example search term
+    const [query, setQuery] = useState<string>('chicken'); // Example search term
     const [searchQuery, setSearchQuery] = useState<string>(''); // Search term from input field
     const [noResults, setNoResults] = useState<boolean>(false);
 
@@ -96,8 +103,9 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 24,
-        fontWeight: 'bold',
+        fontFamily: "KalamBold",
         marginBottom: 16,
+        alignSelf: "center"
     },
     searchContainer: {
         flexDirection: 'row',
