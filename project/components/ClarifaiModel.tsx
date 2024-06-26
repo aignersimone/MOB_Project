@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {View, Text, StyleSheet, Image, SafeAreaView,ScrollView, TouchableOpacity, FlatList} from 'react-native';
+import { View, Text, StyleSheet, Image, SafeAreaView, ScrollView, TouchableOpacity, FlatList } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { FontAwesome } from "@expo/vector-icons";
 import RecipeItem from "./RecipeItem";
@@ -9,6 +9,8 @@ const ClarifaiModel = () => {
     const [results, setResults] = useState<string[]>([]);
     const [ingredients, setIngredients] = useState<string[]>([]);
     const [recipes, setRecipes] = useState<any[]>([]);
+    const [analyzing, setAnalyzing] = useState(false); // State for displaying analysis feedback
+    const [loadingRecipes, setLoadingRecipes] = useState(false); // State for displaying recipe loading feedback
 
     const pickImage = async () => {
         const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -27,6 +29,7 @@ const ClarifaiModel = () => {
         if (!result.canceled && result.assets) {
             const uri = result.assets[0].uri;
             setImages((prevImages) => [...prevImages, uri]);
+            setAnalyzing(true); // Start displaying analyzing message
             analyzeImage(uri);
         }
     };
@@ -38,12 +41,15 @@ const ClarifaiModel = () => {
         const ingredientsQuery = ingredients.join(' ');
         console.log(ingredientsQuery);
 
+        setLoadingRecipes(true); // Start displaying recipe loading message
+
         fetch(
             `https://api.edamam.com/api/recipes/v2?type=public&q=${ingredientsQuery}&app_id=${app_id}&app_key=${app_key}`
         )
             .then((response) => response.json())
             .then((data) => {
                 console.log(data);
+                setLoadingRecipes(false); // Stop displaying recipe loading message
                 if (data.hits && data.hits.length > 0) {
                     const filteredRecipes = data.hits.filter(recipe => {
                         return ingredients.some(ingredient =>
@@ -58,6 +64,7 @@ const ClarifaiModel = () => {
             })
             .catch((error) => {
                 console.error('Error:', error);
+                setLoadingRecipes(false); // Stop displaying recipe loading message in case of error
             });
     };
 
@@ -113,9 +120,11 @@ const ClarifaiModel = () => {
             const foodName = result.outputs[0].data.concepts[0].name;
             setResults((prevResults) => [...prevResults, foodName]);
             setIngredients((prevIngredients) => [...prevIngredients, foodName]);
+            setAnalyzing(false); // Stop displaying analyzing message
         } catch (error) {
             console.error('Error:', error);
             setResults((prevResults) => [...prevResults, 'Error fetching model results']);
+            setAnalyzing(false); // Stop displaying analyzing message in case of error
         }
     };
 
@@ -128,28 +137,31 @@ const ClarifaiModel = () => {
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView contentContainerStyle={styles.scrollViewContainer}>
-                <TouchableOpacity style={styles.button} onPress={pickImage}>
-                    <Text style={styles.buttonText}>Take Photo</Text>
-                </TouchableOpacity>
-                <View style={styles.imageRow}>
-                    {images.map((uri, index) => (
-                        <View key={index} style={styles.imageContainer}>
-                            <Image source={{ uri }} style={styles.image} />
-                            {results[index] && <Text style={styles.result}>{results[index]}</Text>}
-                            <TouchableOpacity style={styles.deleteIcon} onPress={() => deleteImage(index)}>
-                                <FontAwesome name="trash" size={20} color='black'/>
-                            </TouchableOpacity>
-                        </View>
-                    ))}
-                </View>
                 <View>
-                    <Text>Scanned Ingredients:</Text>
-                    {ingredients.map((ingredient, index) => (
-                        <Text key={index}>{ingredient}</Text>
-                    ))}
+                    <Text style={styles.mar}>1.  Scan your ingredients</Text>
+                    <TouchableOpacity style={styles.button} onPress={pickImage}>
+                        <Text style={styles.buttonText}>Take Photo</Text>
+                    </TouchableOpacity>
+                    <View style={styles.imageRow}>
+                        {images.map((uri, index) => (
+                            <View key={index} style={styles.imageContainer}>
+                                <Image source={{ uri }} style={styles.image} />
+                                {results[index] && <Text style={styles.result}>{results[index]}</Text>}
+                                <TouchableOpacity style={styles.deleteIcon} onPress={() => deleteImage(index)}>
+                                    <FontAwesome name="trash" size={20} color='black'/>
+                                </TouchableOpacity>
+                            </View>
+                        ))}
+                    </View>
+                    {analyzing && <Text style={styles.info}>Analyzing ingredient...</Text>}
+                </View>
+
+                <View>
+                    <Text>2.  Show Recipe with these ingredients</Text>
                     <TouchableOpacity style={styles.button} onPress={loadRecipe}>
                         <Text style={styles.buttonText}>Show Recipe</Text>
                     </TouchableOpacity>
+                    {loadingRecipes && <Text style={styles.info}>Loading recipes...</Text>}
                     {recipes.length > 0 && (
                         <FlatList
                             data={recipes}
@@ -159,6 +171,7 @@ const ClarifaiModel = () => {
                         />
                     )}
                 </View>
+
             </ScrollView>
         </SafeAreaView>
     );
@@ -211,11 +224,17 @@ const styles = StyleSheet.create({
         padding: 8,
         marginBottom: 16,
         marginTop: 8,
-        width: 130,
     },
     recipesContainer: {
         marginTop: 20,
     },
+    info:{
+        color:'#f4511e',
+        marginBottom: 15,
+    },
+    mar:{
+        marginTop:20,
+    }
 });
 
 export default ClarifaiModel;
