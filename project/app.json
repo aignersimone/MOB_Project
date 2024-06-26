@@ -1,6 +1,7 @@
 {
   "expo": {
     "name": "project",
+    "entryPoint": "./app/home.tsx",
     "slug": "project",
     "scheme": "project",
     "version": "1.0.0",

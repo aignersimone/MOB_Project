@@ -4,7 +4,7 @@ import React from "react";
 import {useNavigation} from "@react-navigation/native";
 
 
-export default function HomePage() {
+export default function App() {
     const [loaded, error] = useFonts({
         'KalamBold':require('../assets/fonts/Kalam-Bold.ttf'),
         'KalamRegular':require('../assets/fonts/Kalam-Regular.ttf'),
@@ -14,7 +14,7 @@ export default function HomePage() {
     const navigation = useNavigation();
 
     const handlePressRecipe = ()=> {
-        navigation.navigate('index');
+        navigation.navigate('recipes');
     };
 
 
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
     },
     button:{
-        borderColor: '#ccc',
+        borderColor: '#f4511e',
         borderWidth: 1,
         borderRadius: 8,
         backgroundColor: '#f4511e',
