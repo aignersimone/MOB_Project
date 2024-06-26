@@ -9,8 +9,8 @@ const ClarifaiModel = () => {
     const [results, setResults] = useState<string[]>([]);
     const [ingredients, setIngredients] = useState<string[]>([]);
     const [recipes, setRecipes] = useState<any[]>([]);
-    const [analyzing, setAnalyzing] = useState(false); // State for displaying analysis feedback
-    const [loadingRecipes, setLoadingRecipes] = useState(false); // State for displaying recipe loading feedback
+    const [analyzing, setAnalyzing] = useState(false); // State für User-feedback während der Analyse
+    const [loadingRecipes, setLoadingRecipes] = useState(false); // State für User-feedback während der Analyse
 
     const pickImage = async () => {
         const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -233,7 +233,7 @@ const styles = StyleSheet.create({
         marginBottom: 15,
     },
     mar:{
-        marginTop:20,
+        marginTop:40,
     }
 });
 
