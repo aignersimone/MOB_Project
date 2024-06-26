@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
-import { View, Text, Button, StyleSheet, Image, SafeAreaView, ScrollView, TouchableOpacity } from 'react-native';
+import {View, Text, StyleSheet, Image, SafeAreaView,ScrollView, TouchableOpacity, FlatList} from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import {FontAwesome} from "@expo/vector-icons";
+import { FontAwesome } from "@expo/vector-icons";
+import RecipeItem from "./RecipeItem";
 
 const ClarifaiModel = () => {
     const [images, setImages] = useState<string[]>([]);
     const [results, setResults] = useState<string[]>([]);
     const [ingredients, setIngredients] = useState<string[]>([]);
+    const [recipes, setRecipes] = useState<any[]>([]);
 
     const pickImage = async () => {
         const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -27,6 +29,36 @@ const ClarifaiModel = () => {
             setImages((prevImages) => [...prevImages, uri]);
             analyzeImage(uri);
         }
+    };
+
+    const loadRecipe = () => {
+        const app_id = '7d254b68'; // Your App ID
+        const app_key = '16a2684bdfd34e95b15fa59969b25d54'; // Your API Key
+
+        const ingredientsQuery = ingredients.join(' ');
+        console.log(ingredientsQuery);
+
+        fetch(
+            `https://api.edamam.com/api/recipes/v2?type=public&q=${ingredientsQuery}&app_id=${app_id}&app_key=${app_key}`
+        )
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+                if (data.hits && data.hits.length > 0) {
+                    const filteredRecipes = data.hits.filter(recipe => {
+                        return ingredients.some(ingredient =>
+                            recipe.recipe.ingredientLines.join(' ').toLowerCase().includes(ingredient.toLowerCase())
+                        );
+                    });
+
+                    setRecipes(filteredRecipes);
+                } else {
+                    alert('No recipes found');
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
     };
 
     const analyzeImage = async (uri: string) => {
@@ -91,9 +123,6 @@ const ClarifaiModel = () => {
         setImages((prevImages) => prevImages.filter((_, i) => i !== index));
         setResults((prevResults) => prevResults.filter((_, i) => i !== index));
         setIngredients((prevIngredients) => prevIngredients.filter((_, i) => i !== index));
-        //image aus dem Ingredients array löschen
-        ingredients.splice(index, 1);
-
     };
 
     return (
@@ -114,13 +143,21 @@ const ClarifaiModel = () => {
                     ))}
                 </View>
                 <View>
-                    <Text style={styles.text}>Scanned Ingredients:</Text>
+                    <Text>Scanned Ingredients:</Text>
                     {ingredients.map((ingredient, index) => (
                         <Text key={index}>{ingredient}</Text>
                     ))}
-                    <TouchableOpacity style={styles.button}>
+                    <TouchableOpacity style={styles.button} onPress={loadRecipe}>
                         <Text style={styles.buttonText}>Show Recipe</Text>
                     </TouchableOpacity>
+                    {recipes.length > 0 && (
+                        <FlatList
+                            data={recipes}
+                            renderItem={({ item }) => <RecipeItem item={item} />}
+                            keyExtractor={(item) => item.recipe.uri}
+                            contentContainerStyle={styles.recipesContainer}
+                        />
+                    )}
                 </View>
             </ScrollView>
         </SafeAreaView>
@@ -173,11 +210,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         padding: 8,
         marginBottom: 16,
-        marginTop: -8,
+        marginTop: 8,
         width: 130,
     },
-
-
+    recipesContainer: {
+        marginTop: 20,
+    },
 });
 
 export default ClarifaiModel;
