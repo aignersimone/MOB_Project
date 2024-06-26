@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, TextInput, TouchableOpacity, FlatList, ActivityIndicator, Image } from 'react-native';
-import {router} from "expo-router";
+import { StyleSheet, View, Text, TextInput, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native';
+import RecipeItem from "../../components/RecipeItem";
 
 const RecipePage: React.FC = () => {
     const [recipes, setRecipes] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
-    const [query, setQuery] = useState<string>(''); // Beispiel-Suchbegriff
-    const [searchQuery, setSearchQuery] = useState<string>(''); // Suchbegriff von Eingabefeld
+    const [query, setQuery] = useState<string>(''); // Example search term
+    const [searchQuery, setSearchQuery] = useState<string>(''); // Search term from input field
     const [noResults, setNoResults] = useState<boolean>(false);
 
-    const app_id = '7d254b68'; // Deine App ID
-    const app_key = '16a2684bdfd34e95b15fa59969b25d54'; // Dein API Key
+    const app_id = '7d254b68'; // Your App ID
+    const app_key = '16a2684bdfd34e95b15fa59969b25d54'; // Your API Key
 
     const fetchRecipes = async (query: string) => {
         setLoading(true);
@@ -23,11 +23,10 @@ const RecipePage: React.FC = () => {
             );
 
             if (!response.ok) {
-                throw new Error(`Fehler: ${response.status}`);
+                throw new Error(`Error: ${response.status}`);
             }
 
             const data = await response.json();
-            //console.log(data);
             if (data.hits.length === 0) {
                 setNoResults(true);
             }
@@ -58,11 +57,10 @@ const RecipePage: React.FC = () => {
     if (error) {
         return (
             <View style={styles.centered}>
-                <Text>Fehler: {error}</Text>
+                <Text>Error: {error}</Text>
             </View>
         );
     }
-
 
     return (
         <View style={styles.container}>
@@ -70,9 +68,10 @@ const RecipePage: React.FC = () => {
             <View style={styles.searchContainer}>
                 <TextInput
                     style={styles.input}
-                    placeholder="Suche nach Rezepten"
+                    placeholder="Search for recipes"
                     value={searchQuery}
                     onChangeText={setSearchQuery}
+                    onSubmitEditing={handleSearch} // Trigger search on Enter
                 />
                 <TouchableOpacity onPress={handleSearch} style={styles.button}>
                     <Text style={styles.buttonText}>🔍</Text>
@@ -82,17 +81,9 @@ const RecipePage: React.FC = () => {
             <FlatList
                 data={recipes}
                 renderItem={({ item }) => (
-                    <TouchableOpacity onPress={() => router.push({pathname:item.recipe.label, params:item.recipe.uri})}>
-                        <View style={styles.recipeItem}>
-                            <Image
-                                source={{ uri: item.recipe.image }}
-                                style={styles.recipeImage}
-                            />
-                            <Text style={styles.label}>{item.recipe.label}</Text>
-
-                        </View>
-                    </TouchableOpacity>
+                    <RecipeItem item={item} />
                 )}
+                keyExtractor={(item) => item.recipe.uri}
             />
         </View>
     );
@@ -136,27 +127,11 @@ const styles = StyleSheet.create({
         marginBottom: 16,
         color: 'red',
     },
-    recipeItem: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginBottom: 10,
-        padding: 8,
-        backgroundColor: '#DBD9DD',
-        borderRadius: 4,
-    },
-    recipeImage: {
-        width: 50,
-        height: 50,
-        marginRight: 8,
-    },
     centered: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
     },
-    label:{
-        fontSize: 16,
-    }
 });
 
 export default RecipePage;
