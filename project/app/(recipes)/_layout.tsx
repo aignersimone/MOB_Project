@@ -1,6 +1,13 @@
 import { Stack } from 'expo-router';
+import {useFonts} from "expo-font";
 
 export default function RecipeLayout(){
+    const [loaded, error] = useFonts({
+        'KalamBold':require('../../assets/fonts/Kalam-Bold.ttf'),
+        'KalamRegular':require('../../assets/fonts/Kalam-Regular.ttf'),
+        'KalamLight':require('../../assets/fonts/Kalam-Light.ttf'),
+    });
+
     return (
         <Stack screenOptions={{
             headerStyle:{
@@ -8,7 +15,9 @@ export default function RecipeLayout(){
 
             },headerTintColor: "white",
             headerTitleStyle:{
-                fontWeight: "bold"
+                fontFamily: "KalamBold",
+                fontWeight: "bold",
+                fontSize: 20
             },
             tabBarActiveTintColor: "#f4511e",
             tabBarInactiveTintColor: "black"
