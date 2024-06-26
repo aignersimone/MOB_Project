@@ -39,9 +39,6 @@ export default function App() {
                     <Text style={styles.buttonText}>Find Recipes</Text>
                 </TouchableOpacity>
 
-
-                <Text style={styles.text}><Text style={styles.boldText}>Stay Organized:</Text> With ReceptReveal, meal planning and grocery shopping have never been easier. Keep track of ingredients, create shopping lists, and ensure you always have what you need to create delicious meals.</Text>
-
                 <Text style={styles.text}>Join the ReceptReveal community today and transform your cooking experience. Let’s get started on your culinary journey!</Text>
 
                 <Image  source={require('../assets/RecipeReveal.png')} style={styles.image} />
