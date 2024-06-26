@@ -131,6 +131,5 @@ const styles = StyleSheet.create({
         width: 300,
         height: 400,
         resizeMode: 'contain',
-        padding: 8,
     },
 });
