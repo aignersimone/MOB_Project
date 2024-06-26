@@ -14,7 +14,7 @@ export default function App() {
     const navigation = useNavigation();
 
     const handlePressRecipe = ()=> {
-        navigation.navigate('recipes');
+        navigation.navigate('(recipes)');
     };
 
 
