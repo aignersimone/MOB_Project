@@ -21,6 +21,7 @@ export default function RecipeLayout(){
             },
             tabBarActiveTintColor: "#f4511e",
             tabBarInactiveTintColor: "black"
+            padding: 8,
         }
         }>
             <Stack.Screen name="index" options={

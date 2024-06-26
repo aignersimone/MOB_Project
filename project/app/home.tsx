@@ -17,6 +17,7 @@ export default function HomePage() {
         navigation.navigate('index');
     };
 
+
     const handlePressIngredients = ()=> {
         navigation.navigate('ingredients');
     };
@@ -86,5 +87,6 @@ const styles = StyleSheet.create({
     },
     buttonText:{
         color: '#ffffff',
+        padding: 8,
     }
 });

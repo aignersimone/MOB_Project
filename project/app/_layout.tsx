@@ -40,6 +40,7 @@ function TabsLayout(){
                 fontWeight: "bold",
                 fontFamily: "KalamBold",
                 fontSize: 20
+                padding: 8,
             },
             tabBarActiveTintColor: "#f4511e",
             tabBarInactiveTintColor: "black"
