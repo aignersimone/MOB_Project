@@ -2,13 +2,17 @@ import React from 'react';
 import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
 
+// Definition eines geeigneten Typen auf der Grundlage der Struktur des Rezepts
 interface RecipeItemProps {
-    item: any; // Define a proper type based on your recipe item structure
+    item: any;
 }
 
+//React Functional Component (FC) namens RecipeItem mit TypeScript
 const RecipeItem: React.FC<RecipeItemProps> = ({ item }) => {
+    //router für die Weiterleitung zur Detailseite verwenden
     const router = useRouter();
 
+    //Rückgabe des Listenelementes eines Rezeptes
     return (
         <TouchableOpacity onPress={() => router.push({ pathname: item.recipe.label, params:  item.recipe  })}>
             <View style={styles.recipeItem}>
@@ -22,6 +26,7 @@ const RecipeItem: React.FC<RecipeItemProps> = ({ item }) => {
     );
 };
 
+//Styling definieren
 const styles = StyleSheet.create({
     recipeItem: {
         flexDirection: 'row',

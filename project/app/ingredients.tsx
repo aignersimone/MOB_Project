@@ -2,6 +2,7 @@ import {ScrollView, Text, StyleSheet} from "react-native";
 import ClarifaiModel from "../components/ClarifaiModel";
 
 export default function IngredientsPage(){
+    //RZutatenseite mit dem ClarifaiModel laden und retournieren
     return (
         <ScrollView style={styles.container}>
             <Text style={styles.title}>Our smart recipe finder</Text>
@@ -11,6 +12,7 @@ export default function IngredientsPage(){
     )
 }
 
+//Styling definieren
 const styles = StyleSheet.create({
     info:{
         fontSize: 16,
@@ -27,5 +29,4 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 24,
     },
-
 });

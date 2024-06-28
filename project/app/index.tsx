@@ -5,23 +5,27 @@ import {useNavigation} from "@react-navigation/native";
 
 
 export default function App() {
+    //Schriftarten laden
     const [loaded, error] = useFonts({
         'KalamBold':require('../assets/fonts/Kalam-Bold.ttf'),
         'KalamRegular':require('../assets/fonts/Kalam-Regular.ttf'),
         'KalamLight':require('../assets/fonts/Kalam-Light.ttf'),
     });
 
+    //Navigation integrieren
     const navigation = useNavigation();
 
+    //Navigation zu den Rezepten handeln
     const handlePressRecipe = ()=> {
         navigation.navigate('(recipes)');
     };
 
-
+    //Navigation zu den Zutaten handeln
     const handlePressIngredients = ()=> {
         navigation.navigate('ingredients');
     };
 
+    //Ausgabe der Home-Seite festlegen und retournieren
     return (
         <ScrollView style={styles.container}>
             <View >
@@ -47,6 +51,7 @@ export default function App() {
     );
 }
 
+//Styling definieren
 const styles = StyleSheet.create({
     container: {
         flex: 1,

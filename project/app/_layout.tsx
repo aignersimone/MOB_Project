@@ -5,13 +5,14 @@ import {useEffect} from "react";
 
 SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
+    //Schriftarten laden
     const [loaded, error] = useFonts({
         'KalamBold':require('../assets/fonts/Kalam-Bold.ttf'),
         'KalamRegular':require('../assets/fonts/Kalam-Regular.ttf'),
         'KalamLight':require('../assets/fonts/Kalam-Light.ttf'),
     });
 
-    // Expo Router uses Error Boundaries to catch errors in the navigation tree.
+    //Der Expo Router verwendet Error Boundaries, um Fehler im Navigationsbaum abzufangen.
     useEffect(() => {
         if (error) throw error;
     }, [error]);
@@ -25,11 +26,11 @@ export default function RootLayout() {
     if (!loaded) {
         return null;
     }
-
     return <TabsLayout />;
 }
 
 function TabsLayout(){
+    //Tablayout festlegen
     return (
         <Tabs screenOptions={{
             headerStyle:{

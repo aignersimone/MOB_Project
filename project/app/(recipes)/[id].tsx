@@ -3,11 +3,11 @@ import React from "react";
 import { useLocalSearchParams } from "expo-router";
 
 export default function RecipeDetail() {
+    //mitgegebene Parameter auslesen
     let params = useLocalSearchParams();
+    //console.log(params);
 
-    console.log(params);
-
-    // Destructure the params to extract the values
+    //Parameter zerlegen um die Werte aus dem Params auszulesen
     const {
         label,
         image,
@@ -18,17 +18,14 @@ export default function RecipeDetail() {
         cautions,
         calories,
         healthLabels,
-        totalTime,
         yield: servings
     } = params;
 
-    // Parse ingredients and health labels
+    // Werte mit, trennen, damit später für jedes Item ein "element" angelegt werden kann
     const ingredients = ingredientLines ? ingredientLines.split(',') : [];
     const healthLabelsList = healthLabels ? healthLabels.split(',') : [];
 
-    // Log image URI to verify it
-    console.log("Image URI: ", image);
-
+    //Rückgabe der Detailseite
     return (
         <ScrollView style={styles.container}>
             <Text style={styles.label}>{label}</Text>
@@ -59,6 +56,7 @@ export default function RecipeDetail() {
     );
 }
 
+//Styling definieren
 const styles = StyleSheet.create({
     container: {
         padding: 24,

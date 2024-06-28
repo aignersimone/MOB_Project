@@ -4,12 +4,14 @@ import RecipeItem from "../../components/RecipeItem";
 import {useFonts} from "expo-font";
 
 const RecipePage: React.FC = () => {
+    //Schriftarten importieren
     const [loaded, errors] = useFonts({
         'KalamBold':require('../../assets/fonts/Kalam-Bold.ttf'),
         'KalamRegular':require('../../assets/fonts/Kalam-Regular.ttf'),
         'KalamLight':require('../../assets/fonts/Kalam-Light.ttf'),
     });
 
+    //Objekte/variablen definieren
     const [recipes, setRecipes] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
@@ -17,9 +19,11 @@ const RecipePage: React.FC = () => {
     const [searchQuery, setSearchQuery] = useState<string>(''); // Search term from input field
     const [noResults, setNoResults] = useState<boolean>(false);
 
+    //API Zugangsdaten angeben
     const app_id = '7d254b68'; // Your App ID
     const app_key = '16a2684bdfd34e95b15fa59969b25d54'; // Your API Key
 
+    //Rezepte von der API holen
     const fetchRecipes = async (query: string) => {
         setLoading(true);
         setError(null);
@@ -69,6 +73,7 @@ const RecipePage: React.FC = () => {
         );
     }
 
+    //Rezeptdetailseite mit den geladenen Rezpten returnieren
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Find the perfect Recipe</Text>
@@ -96,6 +101,7 @@ const RecipePage: React.FC = () => {
     );
 };
 
+//Styling definieren
 const styles = StyleSheet.create({
     container: {
         flex: 1,
