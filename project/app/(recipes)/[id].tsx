@@ -1,70 +1,55 @@
-import { useRoute } from '@react-navigation/native';
 import { StyleSheet, View, Text, Image, ScrollView } from 'react-native';
-import React, { useState, useEffect } from "react";
-
-async function fetchRecipe(uri) {
-    const decodedUri = uri.replace(/%20/g, ' ');
-
-    const url = `https://api.edamam.com/search?q=${decodedUri}&app_id=7d254b68&app_key=16a2684bdfd34e95b15fa59969b25d54`;
-
-    try {
-        const response = await fetch(url);
-        const data = await response.json();
-
-        if (data.hits.length > 0) {
-            return data.hits[0].recipe;
-        } else {
-            console.log("Kein Rezept gefunden.");
-            return null;
-        }
-    } catch (error) {
-        console.error("Fehler bei der Fetch-Anfrage:", error);
-        return null;
-    }
-}
+import React from "react";
+import { useLocalSearchParams } from "expo-router";
 
 export default function RecipeDetail() {
-    const route = useRoute();
-    const { id } = route.params;
-    const name = id.replace(/%20/g, ' ');
+    let params = useLocalSearchParams();
 
-    const [recipe, setRecipe] = useState(null);
+    console.log(params);
 
-    useEffect(() => {
-        const loadRecipe = async () => {
-            const fetchedRecipe = await fetchRecipe(name);
-            setRecipe(fetchedRecipe);
-        };
+    // Destructure the params to extract the values
+    const {
+        label,
+        image,
+        ingredientLines,
+        cuisineType,
+        mealType,
+        dishType,
+        cautions,
+        calories,
+        healthLabels,
+        totalTime,
+        yield: servings
+    } = params;
 
-        loadRecipe();
-    }, [name]);
+    // Parse ingredients and health labels
+    const ingredients = ingredientLines ? ingredientLines.split(',') : [];
+    const healthLabelsList = healthLabels ? healthLabels.split(',') : [];
 
-    if (!recipe) {
-        return (
-            <View style={styles.container}>
-                <Text>Loading...</Text>
-            </View>
-        );
-    }
-    console.log(recipe);
+    // Log image URI to verify it
+    console.log("Image URI: ", image);
 
     return (
         <ScrollView style={styles.container}>
-            <Text style={styles.label}>{recipe.label}</Text>
-            <Image source={{ uri: recipe.image }} style={styles.image} />
+            <Text style={styles.label}>{label}</Text>
+            {/*{image && (*/}
+            {/*    <Image source={{ uri: image }} style={styles.image}*/}
+            {/*    />*/}
+            {/*)}*/}
             <Text style={styles.heading}>Ingredients:</Text>
-            {recipe.ingredientLines.map((item, index) => (
-                <Text key={index} style={styles.ingredient}>• {item}</Text>
+            {ingredients.map((ingredient, index) => (
+                <Text key={index} style={styles.ingredient}>• {ingredient}</Text>
             ))}
             <Text style={styles.heading}>Details:</Text>
-            <Text style={styles.detail}><Text style={styles.boldText}>Cuisine Type:</Text> {recipe.cuisineType.join(', ')}</Text>
-            <Text style={styles.detail}><Text style={styles.boldText}>Dish Type:</Text> {recipe.dishType.join(', ')}</Text>
-            <Text style={styles.detail}><Text style={styles.boldText}>Cautions:</Text> {recipe.cautions.join(', ')}</Text>
-            <Text style={styles.detail}><Text style={styles.boldText}>Calories: </Text>{recipe.calories.toFixed(2)}</Text>
-            {/*<Text style={styles.detail}><Text style={styles.boldText}>Diet Labels:</Text> {recipe.dietLabels.join(', ')}</Text>*/}
-            <Text style={styles.detail}><Text style={styles.boldText}>Health Labels:</Text></Text>
+            <Text style={styles.detail}><Text style={styles.boldText}>Meal Type: </Text>{mealType}</Text>
+            <Text style={styles.detail}><Text style={styles.boldText}>Cuisine Type:</Text> {cuisineType}</Text>
+            <Text style={styles.detail}><Text style={styles.boldText}>Dish Type:</Text> {dishType}</Text>
+            <Text style={styles.detail}><Text style={styles.boldText}>Cautions:</Text> {cautions}</Text>
+            <Text style={styles.detail}><Text style={styles.boldText}>Calories: </Text>{parseFloat(calories).toFixed(2)}</Text>
+            <Text style={styles.detail}><Text style={styles.boldText}>Servings: </Text>{servings}</Text>
+            <Text style={styles.heading}>Health Labels:</Text>
             <View style={styles.tagsContainer}>
-                {recipe.healthLabels.map((label, index) => (
+                {healthLabelsList.map((label, index) => (
                     <View key={index} style={styles.tag}>
                         <Text style={styles.tagText}>{label}</Text>
                     </View>

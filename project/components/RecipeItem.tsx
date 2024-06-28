@@ -10,7 +10,7 @@ const RecipeItem: React.FC<RecipeItemProps> = ({ item }) => {
     const router = useRouter();
 
     return (
-        <TouchableOpacity onPress={() => router.push({ pathname: item.recipe.label, params: { uri: item.recipe.uri } })}>
+        <TouchableOpacity onPress={() => router.push({ pathname: item.recipe.label, params:  item.recipe  })}>
             <View style={styles.recipeItem}>
                 <Image
                     source={{ uri: item.recipe.image }}
