@@ -8,7 +8,7 @@ import RecipeItem from "./RecipeItem";
 //Mithilfe des Clarifai-API Models können die Bilder analysiert werden, und daraus Rezept gesucht werden
 // Clarifai hatte einen Basiscode den man für die Verwendung einbauen kann -- dieser wurde aber sehr angepasst
 
-export default ClarifaiModel = () => {
+const ClarifaiModel = () => {
     const [images, setImages] = useState<string[]>([]);
     const [results, setResults] = useState<string[]>([]); // speichert die analysierten Ergebnisse
     const [ingredients, setIngredients] = useState<string[]>([]); // speichert die Zutaten
@@ -248,4 +248,6 @@ const styles = StyleSheet.create({
         marginTop:40,
     }
 });
+
+export default ClarifaiModel;
 
