@@ -4,14 +4,19 @@ import * as ImagePicker from 'expo-image-picker';
 import { FontAwesome } from "@expo/vector-icons";
 import RecipeItem from "./RecipeItem";
 
-const ClarifaiModel = () => {
+//Mithilfe des expo-image-picker-Pakets können Benutzer Bilder machen und auswählen
+//Mithilfe des Clarifai-API Models können die Bilder analysiert werden, und daraus Rezept gesucht werden
+// Clarifai hatte einen Basiscode den man für die Verwendung einbauen kann -- dieser wurde aber sehr angepasst
+
+export default ClarifaiModel = () => {
     const [images, setImages] = useState<string[]>([]);
-    const [results, setResults] = useState<string[]>([]);
-    const [ingredients, setIngredients] = useState<string[]>([]);
+    const [results, setResults] = useState<string[]>([]); // speichert die analysierten Ergebnisse
+    const [ingredients, setIngredients] = useState<string[]>([]); // speichert die Zutaten
     const [recipes, setRecipes] = useState<any[]>([]);
     const [analyzing, setAnalyzing] = useState(false); // State für User-feedback während der Analyse
     const [loadingRecipes, setLoadingRecipes] = useState(false); // State für User-feedback während der Analyse
 
+    // Kamera wird geöffnet und ein Bild kann gemacht werden
     const pickImage = async () => {
         const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
         if (status !== 'granted') {
@@ -26,6 +31,7 @@ const ClarifaiModel = () => {
             quality: 1,
         });
 
+        // Wenn das Bild erfolgreich aufgenommen wurde, wird es analysiert
         if (!result.canceled && result.assets) {
             const uri = result.assets[0].uri;
             setImages((prevImages) => [...prevImages, uri]);
@@ -34,22 +40,24 @@ const ClarifaiModel = () => {
         }
     };
 
+    // Funktion zum Laden von Rezepten basierend auf den analysierten Zutaten
     const loadRecipe = () => {
-        const app_id = '7d254b68'; // Your App ID
-        const app_key = '16a2684bdfd34e95b15fa59969b25d54'; // Your API Key
+        const app_id = '7d254b68';
+        const app_key = '16a2684bdfd34e95b15fa59969b25d54'; //API Key
 
         const ingredientsQuery = ingredients.join(' ');
         console.log(ingredientsQuery);
 
-        setLoadingRecipes(true); // Start displaying recipe loading message
+        setLoadingRecipes(true); //Startet die Anzeige der Ladenachricht
 
+        // abrufen der Rezept von Edamam API
         fetch(
             `https://api.edamam.com/api/recipes/v2?type=public&q=${ingredientsQuery}&app_id=${app_id}&app_key=${app_key}`
         )
             .then((response) => response.json())
             .then((data) => {
                 console.log(data);
-                setLoadingRecipes(false); // Stop displaying recipe loading message
+                setLoadingRecipes(false); // Stoppt die Anzeige der Ladenachricht
                 if (data.hits && data.hits.length > 0) {
                     const filteredRecipes = data.hits.filter(recipe => {
                         return ingredients.some(ingredient =>
@@ -57,17 +65,18 @@ const ClarifaiModel = () => {
                         );
                     });
 
-                    setRecipes(filteredRecipes);
+                    setRecipes(filteredRecipes); // Setzt die Rezepte, die die Zutaten enthalten
                 } else {
                     alert('No recipes found');
                 }
             })
             .catch((error) => {
                 console.error('Error:', error);
-                setLoadingRecipes(false); // Stop displaying recipe loading message in case of error
+                setLoadingRecipes(false); // Stoppt die Anzeige der Ladenachricht -> hier im Fehlerfall
             });
     };
 
+    // sendet das aufgenommene Bild an das Clarifai-Modell und analysiert es
     const analyzeImage = async (uri: string) => {
         const PAT = '2a2b21785c7d4125a9be11c657754f53';
         const USER_ID = 'clarifai';
@@ -111,6 +120,7 @@ const ClarifaiModel = () => {
             body: raw,
         };
 
+        // Senden der Analyse-Anfrage an die Clarifai API
         try {
             const response = await fetch(
                 `https://api.clarifai.com/v2/models/${MODEL_ID}/versions/${MODEL_VERSION_ID}/outputs`,
@@ -120,14 +130,15 @@ const ClarifaiModel = () => {
             const foodName = result.outputs[0].data.concepts[0].name;
             setResults((prevResults) => [...prevResults, foodName]);
             setIngredients((prevIngredients) => [...prevIngredients, foodName]);
-            setAnalyzing(false); // Stop displaying analyzing message
+            setAnalyzing(false); // Stoppt die Anzeige der Analyse-Nachricht
         } catch (error) {
             console.error('Error:', error);
             setResults((prevResults) => [...prevResults, 'Error fetching model results']);
-            setAnalyzing(false); // Stop displaying analyzing message in case of error
+            setAnalyzing(false); // Stoppt die Anzeige der Analyse-Nachricht
         }
     };
 
+    // Funktion zum löschen von einem aufgenommenem BIld
     const deleteImage = (index: number) => {
         setImages((prevImages) => prevImages.filter((_, i) => i !== index));
         setResults((prevResults) => prevResults.filter((_, i) => i !== index));
@@ -177,6 +188,7 @@ const ClarifaiModel = () => {
     );
 };
 
+// Styling definieren
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -237,4 +249,3 @@ const styles = StyleSheet.create({
     }
 });
 
-export default ClarifaiModel;
