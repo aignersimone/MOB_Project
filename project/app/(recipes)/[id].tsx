@@ -29,10 +29,10 @@ export default function RecipeDetail() {
     return (
         <ScrollView style={styles.container}>
             <Text style={styles.label}>{label}</Text>
-
-            <Image source={{ uri: image }} style={styles.image}
-            />
-
+            {/*{image && (*/}
+            {/*    <Image source={{ uri: image }} style={styles.image}*/}
+            {/*    />*/}
+            {/*)}*/}
             <Text style={styles.heading}>Ingredients:</Text>
             {ingredients.map((ingredient, index) => (
                 <Text key={index} style={styles.ingredient}>• {ingredient}</Text>
