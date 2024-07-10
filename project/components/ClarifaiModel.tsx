@@ -67,7 +67,9 @@ const ClarifaiModel = () => {
 
                     setRecipes(filteredRecipes); // Setzt die Rezepte, die die Zutaten enthalten
                 } else {
+                    setRecipes([]);
                     alert('No recipes found');
+
                 }
             })
             .catch((error) => {
