@@ -8,3 +8,5 @@ Git Repository: https://github.com/aignersimone/MOB_Project
 2. cd dateipfad - (in das Projektverzeichnis wechseln)
 3. npm install
 4. npx expo start 
+
+<b><i> Los geht's! Viel Spaß bei der Rezepte-Suche! </i></b>
