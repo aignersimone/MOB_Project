@@ -5,7 +5,7 @@ import { useLocalSearchParams } from "expo-router";
 export default function RecipeDetail() {
     //mitgegebene Parameter auslesen
     let params = useLocalSearchParams();
-    //console.log(params);
+    console.log(params);
 
     //Parameter zerlegen um die Werte aus dem Params auszulesen
     const {
@@ -29,10 +29,6 @@ export default function RecipeDetail() {
     return (
         <ScrollView style={styles.container}>
             <Text style={styles.label}>{label}</Text>
-            {/*{image && (*/}
-            {/*    <Image source={{ uri: image }} style={styles.image}*/}
-            {/*    />*/}
-            {/*)}*/}
             <Text style={styles.heading}>Ingredients:</Text>
             {ingredients.map((ingredient, index) => (
                 <Text key={index} style={styles.ingredient}>• {ingredient}</Text>

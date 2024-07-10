@@ -14,7 +14,7 @@ const RecipeItem: React.FC<RecipeItemProps> = ({ item }) => {
 
     //Rückgabe des Listenelementes eines Rezeptes
     return (
-        <TouchableOpacity onPress={() => router.push({ pathname: item.recipe.label, params:  item.recipe  })}>
+        <TouchableOpacity onPress={() => router.push({ pathname: item.recipe.label, params: item.recipe })}>
             <View style={styles.recipeItem}>
                 <Image
                     source={{ uri: item.recipe.image }}
