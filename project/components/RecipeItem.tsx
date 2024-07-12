@@ -43,6 +43,9 @@ const styles = StyleSheet.create({
     },
     label: {
         fontSize: 16,
+        paddingEnd: 2,
+        width: 250,
+
     },
 });
 
